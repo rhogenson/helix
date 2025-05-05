@@ -702,7 +702,7 @@ pub mod completers {
             .collect()
     }
 
-    pub fn program(_editor: &Editor, input: &str) -> Vec<Completion> {
+    pub fn program(_editor: &Editor, input: &str) -> CompletionResult {
         static PROGRAMS_IN_PATH: Lazy<BTreeSet<String>> = Lazy::new(|| {
             // Go through the entire PATH and read all files into a set.
             let Some(path) = std::env::var_os("PATH") else {
@@ -730,7 +730,7 @@ pub mod completers {
     }
 
     /// This expects input to be a raw string of arguments, because this is what Signature's raw_after does.
-    pub fn repeating_filenames(editor: &Editor, input: &str) -> Vec<Completion> {
+    pub fn repeating_filenames(editor: &Editor, input: &str) -> CompletionResult {
         let token = match Tokenizer::new(input, false).last() {
             Some(token) => token.unwrap(),
             None => return filename(editor, input),
@@ -738,26 +738,28 @@ pub mod completers {
 
         let offset = token.content_start;
 
-        let mut completions = filename(editor, &input[offset..]);
-        for completion in completions.iter_mut() {
-            completion.0.start += offset;
-        }
-        completions
+        filename(editor, &input[offset..]).map(move |mut completions| {
+            for completion in completions.iter_mut() {
+                completion.0.start += offset;
+            }
+            completions
+        })
     }
 
-    pub fn shell(editor: &Editor, input: &str) -> Vec<Completion> {
+    pub fn shell(editor: &Editor, input: &str) -> CompletionResult {
         let (command, args, complete_command) = command_line::split(input);
 
         if complete_command {
             return program(editor, command);
         }
 
-        let mut completions = repeating_filenames(editor, args);
-        for completion in completions.iter_mut() {
-            // + 1 for separator between `command` and `args`
-            completion.0.start += command.len() + 1;
-        }
-
-        completions
+        let len = command.len();
+        repeating_filenames(editor, args).map(move |mut completions| {
+            for completion in completions.iter_mut() {
+                // + 1 for separator between `command` and `args`
+                completion.0.start += len + 1;
+            }
+            completions
+        })
     }
 }
