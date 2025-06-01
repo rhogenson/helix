@@ -340,9 +340,17 @@ cd helix
 </li>
 <li>
 <p>Compile from source:</p>
-<pre><code class="language-sh">cargo install --path helix-term --locked
+<pre><code class="language-sh"># Reproducible
+cargo install --path helix-term --locked
 </code></pre>
-<p>This command will create the <code>hx</code> executable and construct the tree-sitter
+<pre><code class="language-sh"># Optimized
+cargo install \
+   --profile opt \
+   --config 'build.rustflags="-C target-cpu=native"' \
+   --path helix-term \
+   --locked
+</code></pre>
+<p>Either command will create the <code>hx</code> executable and construct the tree-sitter
 grammars in the local <code>runtime</code> folder.</p>
 </li>
 </ol>
@@ -1576,8 +1584,8 @@ space.B = ":echo %sh{git blame -L %{cursor_line},+1 %{buffer_name}}"
 <tr><td><code>command_palette</code></td><td>Open command palette</td><td>normal: <code>&lt;space&gt;?</code>, select: <code>&lt;space&gt;?</code></td></tr>
 <tr><td><code>goto_word</code></td><td>Jump to a two-character label</td><td>normal: <code>gw</code></td></tr>
 <tr><td><code>extend_to_word</code></td><td>Extend to a two-character label</td><td>select: <code>gw</code></td></tr>
-<tr><td><code>goto_next_tabstop</code></td><td>goto next snippet placeholder</td><td></td></tr>
-<tr><td><code>goto_prev_tabstop</code></td><td>goto next snippet placeholder</td><td></td></tr>
+<tr><td><code>goto_next_tabstop</code></td><td>Goto next snippet placeholder</td><td></td></tr>
+<tr><td><code>goto_prev_tabstop</code></td><td>Goto next snippet placeholder</td><td></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h2 id="language-support"><a class="header" href="#language-support">Language Support</a></h2>
 <p>The following languages and Language Servers are supported. To use
@@ -1608,6 +1616,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>capnp</td><td>✓</td><td></td><td>✓</td><td></td></tr>
 <tr><td>cel</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>circom</td><td>✓</td><td></td><td></td><td><code>circom-lsp</code></td></tr>
+<tr><td>clarity</td><td>✓</td><td></td><td></td><td><code>clarinet</code></td></tr>
 <tr><td>clojure</td><td>✓</td><td></td><td></td><td><code>clojure-lsp</code></td></tr>
 <tr><td>cmake</td><td>✓</td><td>✓</td><td>✓</td><td><code>cmake-language-server</code></td></tr>
 <tr><td>codeql</td><td>✓</td><td>✓</td><td></td><td><code>codeql</code></td></tr>
@@ -1771,7 +1780,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>prql</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>pug</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>purescript</td><td>✓</td><td>✓</td><td></td><td><code>purescript-language-server</code></td></tr>
-<tr><td>python</td><td>✓</td><td>✓</td><td>✓</td><td><code>ruff</code>, <code>jedi-language-server</code>, <code>pylsp</code></td></tr>
+<tr><td>python</td><td>✓</td><td>✓</td><td>✓</td><td><code>ty</code>, <code>ruff</code>, <code>jedi-language-server</code>, <code>pylsp</code></td></tr>
 <tr><td>qml</td><td>✓</td><td></td><td>✓</td><td><code>qmlls</code></td></tr>
 <tr><td>quarto</td><td>✓</td><td></td><td>✓</td><td></td></tr>
 <tr><td>quint</td><td>✓</td><td></td><td></td><td><code>quint-language-server</code></td></tr>
@@ -1786,6 +1795,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>rst</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>ruby</td><td>✓</td><td>✓</td><td>✓</td><td><code>ruby-lsp</code>, <code>solargraph</code></td></tr>
 <tr><td>rust</td><td>✓</td><td>✓</td><td>✓</td><td><code>rust-analyzer</code></td></tr>
+<tr><td>rust-format-args</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>sage</td><td>✓</td><td>✓</td><td></td><td></td></tr>
 <tr><td>scala</td><td>✓</td><td>✓</td><td>✓</td><td><code>metals</code></td></tr>
 <tr><td>scheme</td><td>✓</td><td></td><td>✓</td><td></td></tr>
@@ -2043,6 +2053,7 @@ workspace-diagnostics = ["warning", "error"]
 <tr><td><code>file-modification-indicator</code></td><td>The indicator to show whether the file is modified (a <code>[+]</code> appears when there are unsaved changes)</td></tr>
 <tr><td><code>file-encoding</code></td><td>The encoding of the opened file if it differs from UTF-8</td></tr>
 <tr><td><code>file-line-ending</code></td><td>The file line endings (CRLF or LF)</td></tr>
+<tr><td><code>file-indent-style</code></td><td>The file indentation style</td></tr>
 <tr><td><code>read-only-indicator</code></td><td>An indicator that shows <code>[readonly]</code> when a file cannot be written</td></tr>
 <tr><td><code>total-line-numbers</code></td><td>The total line numbers of the opened file</td></tr>
 <tr><td><code>file-type</code></td><td>The type of the opened file</td></tr>
