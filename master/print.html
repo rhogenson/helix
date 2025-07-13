@@ -1639,7 +1639,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>dart</td><td>✓</td><td>✓</td><td>✓</td><td><code>dart</code></td></tr>
 <tr><td>dbml</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>debian</td><td>✓</td><td></td><td></td><td></td></tr>
-<tr><td>devicetree</td><td>✓</td><td></td><td></td><td></td></tr>
+<tr><td>devicetree</td><td>✓</td><td></td><td></td><td><code>dts-lsp</code></td></tr>
 <tr><td>dhall</td><td>✓</td><td>✓</td><td></td><td><code>dhall-lsp-server</code></td></tr>
 <tr><td>diff</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>djot</td><td>✓</td><td></td><td></td><td></td></tr>
@@ -1704,6 +1704,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>hoon</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>hosts</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>html</td><td>✓</td><td></td><td></td><td><code>vscode-html-language-server</code>, <code>superhtml</code></td></tr>
+<tr><td>htmldjango</td><td>✓</td><td></td><td></td><td><code>djlsp</code>, <code>vscode-html-language-server</code>, <code>superhtml</code></td></tr>
 <tr><td>hurl</td><td>✓</td><td>✓</td><td>✓</td><td></td></tr>
 <tr><td>hyprlang</td><td>✓</td><td></td><td>✓</td><td><code>hyprls</code></td></tr>
 <tr><td>idris</td><td></td><td></td><td></td><td><code>idris2-lsp</code></td></tr>
@@ -1719,6 +1720,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>jq</td><td>✓</td><td>✓</td><td></td><td><code>jq-lsp</code></td></tr>
 <tr><td>jsdoc</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>json</td><td>✓</td><td>✓</td><td>✓</td><td><code>vscode-json-language-server</code></td></tr>
+<tr><td>json-ld</td><td>✓</td><td>✓</td><td>✓</td><td><code>vscode-json-language-server</code></td></tr>
 <tr><td>json5</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>jsonc</td><td>✓</td><td></td><td>✓</td><td><code>vscode-json-language-server</code></td></tr>
 <tr><td>jsonnet</td><td>✓</td><td></td><td></td><td><code>jsonnet-language-server</code></td></tr>
@@ -1827,6 +1829,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>svelte</td><td>✓</td><td></td><td>✓</td><td><code>svelteserver</code></td></tr>
 <tr><td>sway</td><td>✓</td><td>✓</td><td>✓</td><td><code>forc</code></td></tr>
 <tr><td>swift</td><td>✓</td><td>✓</td><td></td><td><code>sourcekit-lsp</code></td></tr>
+<tr><td>systemd</td><td>✓</td><td></td><td></td><td><code>systemd-lsp</code></td></tr>
 <tr><td>t32</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>tablegen</td><td>✓</td><td>✓</td><td>✓</td><td></td></tr>
 <tr><td>tact</td><td>✓</td><td>✓</td><td>✓</td><td></td></tr>
@@ -1998,6 +2001,7 @@ Its settings will be merged with the configuration directory <code>config.toml</
 <tr><td><code>workspace-lsp-roots</code></td><td>Directories relative to the workspace root that are treated as LSP roots. Should only be set in <code>.helix/config.toml</code></td><td><code>[]</code></td></tr>
 <tr><td><code>default-line-ending</code></td><td>The line ending to use for new documents. Can be <code>native</code>, <code>lf</code>, <code>crlf</code>, <code>ff</code>, <code>cr</code> or <code>nel</code>. <code>native</code> uses the platform's native line ending (<code>crlf</code> on Windows, otherwise <code>lf</code>).</td><td><code>native</code></td></tr>
 <tr><td><code>insert-final-newline</code></td><td>Whether to automatically insert a trailing line-ending on write if missing</td><td><code>true</code></td></tr>
+<tr><td><code>atomic-save</code></td><td>Whether to use atomic operations to write documents to disk. This prevents data loss if the editor is interrupted while writing the file, but may confuse some file watching/hot reloading programs.</td><td><code>true</code></td></tr>
 <tr><td><code>trim-final-newlines</code></td><td>Whether to automatically remove line-endings after the final one on write</td><td><code>false</code></td></tr>
 <tr><td><code>trim-trailing-whitespace</code></td><td>Whether to automatically remove whitespace preceding line endings on write</td><td><code>false</code></td></tr>
 <tr><td><code>popup-border</code></td><td>Draw border around <code>popup</code>, <code>menu</code>, <code>all</code>, or <code>none</code></td><td><code>none</code></td></tr>
