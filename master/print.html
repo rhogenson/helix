@@ -664,6 +664,54 @@ selection to the "func" <code>identifier</code>.</p>
 <p>Most pickers perform fuzzy matching using <a href="https://github.com/junegunn/fzf?tab=readme-ov-file#search-syntax">fzf syntax</a>. Two exceptions are the global search picker, which uses regex, and the workspace symbol picker, which passes search terms to the language server. Note that OR operations (<code>|</code>) are not currently supported.</p>
 <p>If a picker shows multiple columns, you may apply the filter to a specific column by prefixing the column name with <code>%</code>. Column names can be shortened to any prefix, so <code>%p</code>, <code>%pa</code> or <code>%pat</code> all mean the same as <code>%path</code>. For example, a query of <code>helix %p .toml !lang</code> in the global search picker searches for the term "helix" within files with paths ending in ".toml" but not including "lang".</p>
 <p>You can insert the contents of a <a href="./registers.html">register</a> using <code>Ctrl-r</code> followed by a register name. For example, one could insert the currently selected text using <code>Ctrl-r</code>-<code>.</code>, or the directory of the current file using <code>Ctrl-r</code>-<code>%</code> followed by <code>Ctrl-w</code> to remove the last path section. The global search picker will use the contents of the <a href="./registers.html#default-registers">search register</a> if you press <code>Enter</code> without typing a filter. For example, pressing <code>*</code>-<code>Space-/</code>-<code>Enter</code> will start a global search for the currently selected text.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="using-the-jumplist"><a class="header" href="#using-the-jumplist">Using the jumplist</a></h2>
+<p>To help with quick navigation, Helix maintains a list of "jumps" called the jumplist.
+Whenever you make a significant movement (see next section), Helix stores your selections from before the move as a jump.
+A jump serves as a kind of checkpoint, allowing you to jump to a separate location, make edits, and return to where you were with your previous selections.
+This way, the jumplist tracks both your previous location and your selections.
+You can manually save a jump by using <code>Ctrl-s</code>.
+To jump backward in the jumplist, use <code>Ctrl-o</code>; to go forward, use <code>Ctrl-i</code>. To view and select from the full jumplist, use <code>Space-j</code> to open the jumplist picker.</p>
+<h3 id="what-makes-a-jump"><a class="header" href="#what-makes-a-jump">What makes a jump</a></h3>
+<p>The following is a non-exhaustive list of which actions add a jump to the jumplist:</p>
+<ul>
+<li>Switching buffers
+<ul>
+<li>Using the buffer picker, going to the next/previous buffer</li>
+<li>Going to the last accessed/modified file</li>
+<li>Making a new file (<code>:new FILE</code>)</li>
+<li>Opening a file (<code>:open FILE</code>)
+<ul>
+<li>Includes <code>:log-open</code>, <code>:config-open</code>, <code>:config-open-workspace</code>, <code>:tutor</code></li>
+</ul>
+</li>
+<li>Navigating by pickers, global search, or the file explorer</li>
+<li><code>goto_file</code> (<code>gf</code>)</li>
+</ul>
+</li>
+<li>Big in-file movements
+<ul>
+<li><code>select_regex</code> (<code>s</code>)</li>
+<li><code>split_regex</code> (<code>S</code>)</li>
+<li><code>search</code> (<code>/</code>)</li>
+<li><code>keep_selections</code> and <code>remove_selections</code> (<code>K</code> and <code>&lt;A-K&gt;</code>)</li>
+<li><code>goto_file_start</code> (<code>gg</code>)</li>
+<li><code>goto_file_end</code></li>
+<li><code>goto_last_line</code> (<code>ge</code>)</li>
+<li><code>:goto 123</code> / <code>:123</code> / <code>123G</code></li>
+<li><code>goto_definition</code> (<code>gd</code>)</li>
+<li><code>goto_declaration</code> (<code>gD</code>)</li>
+<li><code>goto_type_definition</code> (<code>gy</code>)</li>
+<li><code>goto_reference</code> (<code>gr</code>)</li>
+</ul>
+</li>
+<li>Other
+<ul>
+<li><code>Ctrl-s</code> manually creates a jump</li>
+<li>Trying to close a modified buffer can switch you to that buffer and create a jump</li>
+<li>The debugger can create jumps as you jump stack frames</li>
+</ul>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="keymap"><a class="header" href="#keymap">Keymap</a></h2>
 <ul>
 <li><a href="keymap.html#normal-mode">Normal mode</a>
@@ -714,6 +762,9 @@ selection to the "func" <code>identifier</code>.</p>
 <blockquote>
 <p>NOTE: Unlike Vim, <code>f</code>, <code>F</code>, <code>t</code> and <code>T</code> are not confined to the current line.</p>
 </blockquote>
+<blockquote>
+<p>Hereafter, <code>&lt;n&gt;</code> represents an integer by typing a sequence of digits.</p>
+</blockquote>
 <div class="table-wrapper"><table><thead><tr><th>Key</th><th>Description</th><th>Command</th></tr></thead><tbody>
 <tr><td><code>h</code>, <code>Left</code></td><td>Move left</td><td><code>move_char_left</code></td></tr>
 <tr><td><code>j</code>, <code>Down</code></td><td>Move down</td><td><code>move_visual_line_down</code></td></tr>
@@ -729,7 +780,7 @@ selection to the "func" <code>identifier</code>.</p>
 <tr><td><code>f</code></td><td>Find next char</td><td><code>find_next_char</code></td></tr>
 <tr><td><code>T</code></td><td>Find till previous char</td><td><code>till_prev_char</code></td></tr>
 <tr><td><code>F</code></td><td>Find previous char</td><td><code>find_prev_char</code></td></tr>
-<tr><td><code>G</code></td><td>Go to line number <code>&lt;n&gt;</code></td><td><code>goto_line</code></td></tr>
+<tr><td><code>&lt;n&gt;G</code>, <code>&lt;n&gt;gg</code></td><td>Go to line number <code>&lt;n&gt;</code></td><td><code>goto_line</code></td></tr>
 <tr><td><code>Alt-.</code></td><td>Repeat last motion (<code>f</code>, <code>t</code>, <code>m</code>, <code>[</code> or <code>]</code>)</td><td><code>repeat_last_motion</code></td></tr>
 <tr><td><code>Home</code></td><td>Move to the start of the line</td><td><code>goto_line_start</code></td></tr>
 <tr><td><code>End</code></td><td>Move to the end of the line</td><td><code>goto_line_end</code></td></tr>
@@ -874,8 +925,10 @@ useful when you're simply looking over text and not actively editing it.</p>
 <p>Accessed by typing <code>g</code> in <a href="keymap.html#normal-mode">normal mode</a>.</p>
 <p>Jumps to various locations.</p>
 <div class="table-wrapper"><table><thead><tr><th>Key</th><th>Description</th><th>Command</th></tr></thead><tbody>
-<tr><td><code>g</code></td><td>Go to line number <code>&lt;n&gt;</code> else start of file</td><td><code>goto_file_start</code></td></tr>
-<tr><td><code>|</code></td><td>Go to column number <code>&lt;n&gt;</code> else start of line</td><td><code>goto_column</code></td></tr>
+<tr><td><code>&lt;n&gt;g</code></td><td>Go to line number <code>&lt;n&gt;</code></td><td><code>goto_file_start</code></td></tr>
+<tr><td><code>g</code></td><td>Go to the start of the file</td><td><code>goto_file_start</code></td></tr>
+<tr><td><code>&lt;n&gt;|</code></td><td>Go to column number <code>&lt;n&gt;</code></td><td><code>goto_column</code></td></tr>
+<tr><td><code>|</code></td><td>Go to the start of line</td><td><code>goto_column</code></td></tr>
 <tr><td><code>e</code></td><td>Go to the end of the file</td><td><code>goto_last_line</code></td></tr>
 <tr><td><code>f</code></td><td>Go to files in the selections</td><td><code>goto_file</code></td></tr>
 <tr><td><code>h</code></td><td>Go to the start of the line</td><td><code>goto_line_start</code></td></tr>
@@ -1154,6 +1207,8 @@ space.B = ":echo %sh{git blame -L %{cursor_line},+1 %{buffer_name}}"
 <tr><td><code>cursor_column</code></td><td>The column number of the primary cursor in the currently focused document, starting at 1. This is counted as the number of grapheme clusters from the start of the line rather than bytes or codepoints.</td></tr>
 <tr><td><code>buffer_name</code></td><td>The relative path of the currently focused document. <code>[scratch]</code> is expanded instead for scratch buffers.</td></tr>
 <tr><td><code>line_ending</code></td><td>A string containing the line ending of the currently focused document. For example on Unix systems this is usually a line-feed character (<code>\n</code>) but on Windows systems this may be a carriage-return plus a line-feed (<code>\r\n</code>). The line ending kind of the currently focused document can be inspected with the <code>:line-ending</code> command.</td></tr>
+<tr><td><code>current_working_directory</code></td><td>Current working directory</td></tr>
+<tr><td><code>workspace_directory</code></td><td>Nearest ancestor directory of the current working directory that contains <code>.git</code>, <code>.svn</code>, <code>jj</code> or <code>.helix</code></td></tr>
 <tr><td><code>language</code></td><td>A string containing the language name of the currently focused document.</td></tr>
 <tr><td><code>selection</code></td><td>A string containing the contents of the primary selection of the currently focused document.</td></tr>
 <tr><td><code>selection_line_start</code></td><td>The line number of the start of the primary selection in the currently focused document, starting at 1.</td></tr>
@@ -1694,6 +1749,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>glsl</td><td>✓</td><td>✓</td><td>✓</td><td></td><td><code>glsl_analyzer</code></td></tr>
 <tr><td>gn</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>go</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td><code>gopls</code>, <code>golangci-lint-langserver</code></td></tr>
+<tr><td>go-format-string</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>godot-resource</td><td>✓</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>gomod</td><td>✓</td><td></td><td></td><td></td><td><code>gopls</code></td></tr>
 <tr><td>gotmpl</td><td>✓</td><td></td><td></td><td></td><td><code>gopls</code></td></tr>
@@ -1872,6 +1928,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>verilog</td><td>✓</td><td>✓</td><td></td><td></td><td><code>svlangserver</code></td></tr>
 <tr><td>vhdl</td><td>✓</td><td></td><td></td><td></td><td><code>vhdl_ls</code></td></tr>
 <tr><td>vhs</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>vim</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>vue</td><td>✓</td><td></td><td></td><td></td><td><code>vue-language-server</code></td></tr>
 <tr><td>wast</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>wat</td><td>✓</td><td></td><td></td><td></td><td><code>wat_server</code></td></tr>
