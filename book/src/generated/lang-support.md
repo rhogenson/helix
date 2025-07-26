@@ -86,6 +86,7 @@
 | glsl | ✓ | ✓ | ✓ |  | `glsl_analyzer` |
 | gn | ✓ |  |  |  |  |
 | go | ✓ | ✓ | ✓ | ✓ | `gopls`, `golangci-lint-langserver` |
+| go-format-string | ✓ |  |  |  |  |
 | godot-resource | ✓ | ✓ |  |  |  |
 | gomod | ✓ |  |  |  | `gopls` |
 | gotmpl | ✓ |  |  |  | `gopls` |
@@ -264,6 +265,7 @@
 | verilog | ✓ | ✓ |  |  | `svlangserver` |
 | vhdl | ✓ |  |  |  | `vhdl_ls` |
 | vhs | ✓ |  |  |  |  |
+| vim | ✓ |  |  |  |  |
 | vue | ✓ |  |  |  | `vue-language-server` |
 | wast | ✓ |  |  |  |  |
 | wat | ✓ |  |  |  | `wat_server` |
