@@ -50,11 +50,13 @@ forc = { command = "forc", args = ["lsp"] }
 forth-lsp = { command = "forth-lsp" }
 fortls = { command = "fortls", args = ["--lowercase_intrinsics"] }
 fsharp-ls = { command = "fsautocomplete", config = { AutomaticWorkspaceInit = true } }
+gitlab-ci-ls = { command = "gitlab-ci-ls" }
 gleam = { command = "gleam", args = ["lsp"] }
 glsl_analyzer = { command = "glsl_analyzer" }
 graphql-language-service = { command = "graphql-lsp", args = ["server", "-m", "stream"] }
 harper-ls = { command = "harper-ls", args = ["--stdio"] }
 haskell-language-server = { command = "haskell-language-server-wrapper", args = ["--lsp"] }
+hdls = { command = "hdls" }
 hyprls = { command = "hyprls" }
 idris2-lsp = { command = "idris2-lsp" }
 intelephense = { command = "intelephense", args = ["--stdio"] }
@@ -68,7 +70,7 @@ koka = { command = "koka", args = ["--language-server", "--lsstdio"] }
 koto-ls = { command = "koto-ls" }
 kotlin-lsp = { command = "kotlin-lsp", args = ["--stdio"] }
 kotlin-language-server = { command = "kotlin-language-server" }
-lean = { command = "lean", args = ["--server"] }
+lean = { command = "lake", args = ["serve"] }
 ltex-ls = { command = "ltex-ls" }
 ltex-ls-plus = { command = "ltex-ls-plus" }
 markdoc-ls = { command = "markdoc-ls", args = ["--stdio"] }
@@ -140,6 +142,7 @@ vscode-html-language-server = { command = "vscode-html-language-server", args = 
 vscode-json-language-server = { command = "vscode-json-language-server", args = ["--stdio"], config = { provideFormatter = true, json = { validate = { enable = true } } } }
 vuels = { command = "vue-language-server", args = ["--stdio"], config = { typescript = { tsdk = "node_modules/typescript/lib/" } } }
 wgsl-analyzer = { command = "wgsl-analyzer" }
+wikitext-lsp = { command = "wikitext-lsp", args = ["--stdio"]}
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 yls = { command = "yls", args = ["-vv"] }
 zls = { command = "zls" }
@@ -356,7 +359,20 @@ source = { git = "https://github.com/FuelLabs/tree-sitter-sway", rev = "e491a005
 name = "toml"
 scope = "source.toml"
 injection-regex = "toml"
-file-types = ["toml", { glob = "pdm.lock" }, { glob = "poetry.lock" }, { glob = "Cargo.lock" }, { glob = "uv.lock" }]
+file-types = [
+  "toml",
+  { glob = "pdm.lock" },
+  { glob = "poetry.lock" },
+  { glob = "Cargo.lock" },
+  { glob = "uv.lock" },
+  { glob = "containers.conf" },
+  { glob = "containers.conf.d/*.conf" },
+  { glob = "containers.conf.modules/*.conf" },
+  { glob = "mounts.conf" },
+  { glob = "policy.conf" },
+  { glob = "registries.conf" },
+  { glob = "storage.conf" },
+]
 comment-token = "#"
 language-servers = [ "taplo", "tombi" ]
 indent = { tab-width = 2, unit = "  " }
@@ -1157,6 +1173,10 @@ file-types = [
   { glob = ".yashrc" },
   { glob = ".yash_profile" },
   { glob = ".hushlogin" },
+  { glob = ".xinitrc" }, # ~/.xinitrc
+  { glob = "xinitrc" }, # /etc/X11/xinit/xinitrc
+  { glob = ".xserverrc" }, # ~/.xserverrc
+  { glob = "xserverrc" }, # /etc/X11/xinit/xserverrc
 ]
 shebangs = ["sh", "bash", "dash", "zsh"]
 comment-token = "#"
@@ -1499,6 +1519,7 @@ file-types = [
   { glob = ".clang-tidy" },
   { glob = ".gem/credentials" },
   { glob = ".kube/config" },
+  { glob = ".kube/kuberc" },
   "sublime-syntax"
 ]
 comment-token = "#"
@@ -1602,7 +1623,7 @@ args = { console = "internalConsole", attachCommands = [ "platform select remote
 
 [[grammar]]
 name = "zig"
-source = { git = "https://github.com/tree-sitter-grammars/tree-sitter-zig", rev = "b71affffdb4222ff2d2dea6e164f76603b0be6bc" }
+source = { git = "https://github.com/tree-sitter-grammars/tree-sitter-zig", rev = "6479aa13f32f701c383083d8b28360ebd682fb7d" }
 
 [[language]]
 name = "prolog"
@@ -2513,6 +2534,7 @@ injection-regex = "scheme"
 file-types = ["ss", "scm", "sld"]
 shebangs = ["scheme", "guile", "chicken"]
 comment-token = ";"
+block-comment-tokens = { start = "#|", end = "|#" }
 indent = { tab-width = 2, unit = "  " }
 
 [language.auto-pairs]
@@ -2671,7 +2693,7 @@ language-servers = [ "idris2-lsp" ]
 name = "fortran"
 scope = "source.fortran"
 injection-regex = "fortran"
-file-types = ["f", "for", "f90", "f95", "f03"]
+file-types = ["f", "for", "f90", "f95", "f03", "F", "F90", "F95", "F03"]
 roots = ["fpm.toml"]
 comment-token = "!"
 indent = { tab-width = 4, unit = "    "}
@@ -2679,7 +2701,7 @@ language-servers = [ "fortls" ]
 
 [[grammar]]
 name = "fortran"
-source = { git = "https://github.com/stadelmanma/tree-sitter-fortran", rev = "f0f2f100952a353e64e26b0fa710b4c296d7af13" }
+source = { git = "https://github.com/stadelmanma/tree-sitter-fortran", rev = "8334abca785db3a041292e3b3b818a82a55b238f" }
 
 [[language]]
 name = "ungrammar"
@@ -3006,6 +3028,8 @@ file-types = [
   "mpd",
   "smil",
   "gpx",
+  "fodt",
+  "fods",
 ]
 block-comment-tokens = { start = "<!--", end = "-->" }
 indent = { tab-width = 2, unit = "  " }
@@ -3393,10 +3417,11 @@ scope = "source.hdl"
 file-types = ["hdl"]
 indent = { tab-width = 4, unit = "    " }
 injection-regex = "hdl"
+language-servers = [ "hdls" ]
 
 [[grammar]]
 name = "hdl"
-source = { git = "https://github.com/quantonganh/tree-sitter-hdl", rev = "7d0418fd71470b0430e6f914cc76c1a9d968491d" }
+source = { git = "https://github.com/quantonganh/tree-sitter-hdl", rev="293902330423b2cd36ab1ec4b6b967163a4ed57b" }
 
 [[language]]
 name = "vhdl"
@@ -3467,7 +3492,7 @@ indent = { tab-width = 2, unit = "  " }
 
 [[grammar]]
 name = "hurl"
-source = { git = "https://github.com/pfeiferj/tree-sitter-hurl", rev = "cd1a0ada92cc73dd0f4d7eedc162be4ded758591" }
+source = { git = "https://github.com/pfeiferj/tree-sitter-hurl", rev = "1124058cd192e80d80914652a5850a5b1887cc10" }
 
 [[language]]
 name = "markdoc"
@@ -4768,3 +4793,26 @@ comment-token = "#"
 block-comment-tokens = { start = "/*", end = "*/" }
 indent = { tab-width = 2, unit = "  " }
 language-servers = ["docker-language-server"]
+
+[[language]]
+name = "gitlab-ci"
+scope = "source.gitlab-ci"
+injection-regex = "^gitlab-ci$"
+file-types = [{ glob = ".gitlab-ci.yml" }]
+grammar = "yaml"
+indent = { tab-width = 2, unit = "  " }
+language-servers = ["yaml-language-server", "gitlab-ci-ls"]
+comment-token = "#"
+
+[[grammar]]
+name = "wikitext"
+source = { git = "https://github.com/santhoshtr/tree-sitter-wikitext", rev = "444214b31695e9dd4d32fb06247397fb8778a9d2"}
+
+[[language]]
+name = "wikitext"
+scope = "source.wikitext"
+file-types = ["wikimedia", "mediawiki", "wikitext"]
+language-servers = ["wikitext-lsp"]
+indent = { tab-width = 2, unit = "  " }
+block-comment-tokens = { start = "<!--", end = "-->" }
+word-completion.trigger-length = 4
