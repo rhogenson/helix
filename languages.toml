@@ -1151,6 +1151,7 @@ file-types = [
   "zshrc_Apple_Terminal",
   { glob = "i3/config" },
   { glob = "sway/config" },
+  { glob = ".tmux.conf" },
   { glob = "tmux.conf" },
   { glob = ".bash_history" },
   { glob = ".bash_login" },
@@ -1491,7 +1492,7 @@ language-servers = [ "svelteserver" ]
 
 [[grammar]]
 name = "svelte"
-source = { git = "https://github.com/Himujjal/tree-sitter-svelte", rev = "60ea1d673a1a3eeeb597e098d9ada9ed0c79ef4b" }
+source = { git = "https://github.com/tree-sitter-grammars/tree-sitter-svelte", rev = "ae5199db47757f785e43a14b332118a5474de1a2" }
 
 [[language]]
 name = "vue"
@@ -1701,7 +1702,22 @@ source = { git = "https://github.com/theHamsta/tree-sitter-glsl", rev = "88408ff
 [[language]]
 name = "perl"
 scope = "source.perl"
-file-types = ["pl", "pm", "t", "psgi", "raku", "rakumod", "rakutest", "rakudoc", "nqp", "p6", "pl6", "pm6"]
+file-types =[
+  "pl",
+  "pm",
+  "t",
+  "psgi",
+  "raku",
+  "rakumod",
+  "rakutest",
+  "rakudoc",
+  "nqp",
+  "p6",
+  "pl6",
+  "pm6",
+  {glob = "latexmkrc"},
+  {glob = ".latexmkrc"},
+]
 shebangs = ["perl"]
 comment-token = "#"
 language-servers = [ "perlnavigator" ]
@@ -4354,7 +4370,7 @@ formatter = {command = "koto", args = ["--format"]}
 
 [[grammar]]
 name = "koto"
-source = { git = "https://github.com/koto-lang/tree-sitter-koto", rev = "2ffc77c14f0ac1674384ff629bfc207b9c57ed89" }
+source = { git = "https://github.com/koto-lang/tree-sitter-koto", rev = "633744bca404ae4edb961a3c2d7bc947a987afa4" }
 
 [[language]]
 name = "gpr"
@@ -4735,7 +4751,6 @@ file-types = [{glob = "Cross.toml"}]
 language-servers = [ "taplo", "tombi" ]
 indent = { tab-width = 2, unit = "  " }
 
-# https://git-cliff.org/docs/configuration/
 [[language]]
 name = "git-cliff-config"
 scope = "source.git-cliff-config"
@@ -4816,3 +4831,15 @@ language-servers = ["wikitext-lsp"]
 indent = { tab-width = 2, unit = "  " }
 block-comment-tokens = { start = "<!--", end = "-->" }
 word-completion.trigger-length = 4
+
+[[language]] 
+name = "slisp"
+scope = "source.sl"
+injection-regex = "sl"
+file-types = ["sl"]
+comment-token = ";"
+indent = { tab-width = 2, unit = "  " }
+
+[[grammar]]
+name = "slisp"
+source = { git = "https://github.com/xenogenics/tree-sitter-slisp", rev = "29f9c6707ce9dfc2fc915d175ec720b207f179f3" }
