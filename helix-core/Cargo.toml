@@ -53,7 +53,7 @@ chrono = { version = "0.4", default-features = false, features = ["alloc", "std"
 
 nucleo.workspace = true
 parking_lot.workspace = true
-globset = "0.4.16"
+globset.workspace = true
 regex-cursor = "0.1.5"
 
 [dev-dependencies]
